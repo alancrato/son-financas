@@ -5,6 +5,7 @@ namespace SONFin\Plugins;
 
 use Psr\Container\ContainerInterface;
 use SONFin\ServiceContainerInterface;
+use SONFin\View\ViewRender;
 
 class ViewPlugin implements PluginInterface
 {
@@ -16,5 +17,11 @@ class ViewPlugin implements PluginInterface
            $twig = new \Twig_Environment($loader);
            return $twig;
        });
+
+       $container->addLazy('view.renderer', function (ContainerInterface $container){
+           $twigEnvironment = $container->get('twig');
+           return new ViewRender($twigEnvironment);
+       });
+
     }
 }

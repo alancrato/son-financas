@@ -4,7 +4,7 @@ return [
     'development' => [
         'driver' => 'mysql',
         'host' => 'localhost',
-        'database' => 'son_financas',
+        'database' => 'php_financias',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',

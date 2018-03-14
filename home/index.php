@@ -34,10 +34,24 @@ $app->get('/', function(RequestInterface $request){
     return "Welcome to page index";
 });
 
-$app->get('/category-costs', function () use ($app){
-    $view = $app->service('view.renderer');
-    return $view->render('category-costs/list.html.twig');
-});
+$app
+    ->get('/category-costs', function() use($app){
+        $meuModel = new \SONFin\Models\CategoryCosts();
+        $categories = $meuModel->all();
+        $view = $app->service('view.renderer');
+        return $view->render('category-costs/list.html.twig',[
+            'categories' => $categories
+        ]);
+    })
+    ->get('/category-costs/new', function() use($app){
+        $view = $app->service('view.renderer');
+        return $view->render('category-costs/create.html.twig');
+    })
+    ->post('/category-costs/store', function(ServerRequestInterface $request){
+        $data = $request->getParsedBody();
+        SONFin\Models\CategoryCosts::create($data);
+        return new \Zend\Diactoros\Response\RedirectResponse('/category-costs');
+    });
 
 $app->get('/route', function (RequestInterface $request){
    var_dump($request->getUri());die();

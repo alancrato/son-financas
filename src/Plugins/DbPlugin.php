@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace SONFin\Plugins;
 
+use Interop\Container\ContainerInterface;
+use SONFin\Models\CategoryCosts;
+use SONFin\Repository\RepositoryFactory;
 use SONFin\ServiceContainerInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -15,5 +18,10 @@ class DbPlugin implements PluginInterface
         $config = include __DIR__ . '/../../config/db.php';
         $capsule->addConnection($config['development']);
         $capsule->bootEloquent();
+
+        $container->add('repository.factory', new RepositoryFactory());
+        $container->addLazy('category-costs.repository', function (ContainerInterface $container) {
+            return $container->get('repository.factory')->factory(CategoryCosts::class);
+        });
     }
 }

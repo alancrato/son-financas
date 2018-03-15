@@ -38,5 +38,6 @@ $app->get('/', function(){
 });
 
 require_once __DIR__ . '/../src/controllers/category-costs.php';
+require_once __DIR__ . '/../src/controllers/users.php';
 
 $app->start();

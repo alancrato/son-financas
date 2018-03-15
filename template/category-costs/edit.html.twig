@@ -6,14 +6,15 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        New Category the center to coast
+                        Edit the center to coast
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <form method="post" action="{{ route('category-costs.store') }}">
+                    <form method="post" action="{{ route('category-costs.update',{'id' : category.id}) }}">
                         <label class="control-label">Nome</label>
                         <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Nome" name="name">
+                            <input class="form-control" type="text" placeholder="Nome"
+                                   name="name" value="{{ category.name }}">
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">
                             <span class="glyphicon glyphicon-floppy-disk"></span>

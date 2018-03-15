@@ -42,16 +42,32 @@ $app
         return $view->render('category-costs/list.html.twig',[
             'categories' => $categories
         ]);
-    })
+    },'category-costs.list')
     ->get('/category-costs/new', function() use($app){
         $view = $app->service('view.renderer');
         return $view->render('category-costs/create.html.twig');
-    })
-    ->post('/category-costs/store', function(ServerRequestInterface $request){
+    },'category-costs.new')
+    ->post('/category-costs/store', function(ServerRequestInterface $request) use ($app){
         $data = $request->getParsedBody();
         SONFin\Models\CategoryCosts::create($data);
-        return new \Zend\Diactoros\Response\RedirectResponse('/category-costs');
-    });
+        return $app->route('category-costs.list');
+    },'category-costs.store')
+    ->get('/category-costs/{id}/edit', function(ServerRequestInterface $request) use($app){
+        $view = $app->service('view.renderer');
+        $id = $request->getAttribute('id');
+        $category = \SONFin\Models\CategoryCosts::findOrFail($id);
+        return $view->render('category-costs/edit.html.twig', [
+            'category' => $category
+        ]);
+    },'category-costs.edit')
+    ->post('/category-costs/{id}/update', function(ServerRequestInterface $request) use($app){
+        $id = $request->getAttribute('id');
+        $category = \SONFin\Models\CategoryCosts::findOrFail($id);
+        $data = $request->getParsedBody('id');
+        $category->fill($data);
+        $category->save();
+        return $app->route('category-costs.list');
+    },'category-costs.update');
 
 $app->get('/route', function (RequestInterface $request){
    var_dump($request->getUri());die();
